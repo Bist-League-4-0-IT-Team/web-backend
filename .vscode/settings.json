@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/c798f23b-bcd1-465d-a175-8fe13ccd5d84/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/backend-bist-league",
+    "appService.deploySubpath": "."
+}
