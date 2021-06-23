@@ -74,7 +74,7 @@ module.exports ={
             email:req.body.email,
             team_name: req.body.team_name,
             password: encryptedPassword,
-            institusion_name: req.body.institusion_name
+            institution_name: req.body.institution_name
         })
         await user.save((err,result)=>{
                 if(err){
@@ -306,8 +306,8 @@ completeReg : async (req,res)=>{
                     }
                     try{
                         let photo_2=req.files.photo_2;
-                        await photo_2.mv('./uploads/' + photo_2.name),then((res,err)=>{
-                            drive_upload("KTM",req.body.name_2,photo_2.name,path).then((response)=>{
+                        await photo_2.mv('./uploads/' + photo_2.name).then((res,err)=>{
+                            drive_upload("PHOTO",req.body.name_2,photo_2.name,path).then((response)=>{
                                 User.updateOne({email:user.email},{photo_2:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
                                 fs.unlink(path+photo_2.name,(err)=>{
                                     if(err){
@@ -319,7 +319,7 @@ completeReg : async (req,res)=>{
                                 })
                             })
                         })
-
+                        
                     }
                     catch (e){
 
