@@ -13,7 +13,7 @@ app.use(fileUpload({
   createParentPath: true
 }));
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: ['http://localhost:3000','https://bist-dev.herokuapp.com']
 }));
 app.use(morgan('dev'));
 //established mongoose connection

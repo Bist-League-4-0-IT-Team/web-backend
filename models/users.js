@@ -16,7 +16,7 @@ const userSchema = new Schema({
         type :String,
         required: true
     },
-    institusion_name: {
+    institution_name: {
         type :String,
         required: true
     },

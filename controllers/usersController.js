@@ -74,7 +74,7 @@ module.exports ={
             email:req.body.email,
             team_name: req.body.team_name,
             password: encryptedPassword,
-            institusion_name: req.body.institusion_name
+            institution_name: req.body.institution_name
         })
         await user.save((err,result)=>{
                 if(err){
@@ -204,105 +204,172 @@ completeReg : async (req,res)=>{
             else{
                 //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
                 try{
-                    let ktm_1 = req.files.ktm_1;
-                    let proof_1=req.files.proof_1;
-                    let photo_1=req.files.photo_1;
-                    ktm_1.mv('./uploads/' + ktm_1.name);
-                    proof_1.mv('./uploads/' + proof_1.name);
-                    photo_1.mv('./uploads/' + photo_1.name);
-                    let ktm_2 = req.files.ktm_2;
-                    let proof_2=req.files.proof_2;
-                    let photo_2=req.files.photo_2;
-                    ktm_2.mv('./uploads/' + ktm_2.name);
-                    proof_2.mv('./uploads/' + proof_2.name);
-                    photo_2.mv('./uploads/' + photo_2.name);
-                    let file_3=true;
+                    let ktm_1,photo_1,proof_1;
                     try{
-                        let ktm_3 = req.files.ktm_3;
-                    let proof_3=req.files.proof_3;
-                    let photo_3=req.files.photo_3;
+                        ktm_1 = req.files.ktm_1;
+                        proof_1=req.files.proof_1;
+                        photo_1=req.files.photo_1;
+                        ktm_1.mv('./uploads/' + ktm_1.name);
+                        proof_1.mv('./uploads/' + proof_1.name);
+                        photo_1.mv('./uploads/' + photo_1.name);
+                    }
+                    catch(e){
+
+                    }
+                    let ktm_2,photo_2,proof_2;
+                    try{
+                        ktm_2 = req.files.ktm_2;
+                        proof_2=req.files.proof_2;
+                        photo_2=req.files.photo_2;
+                        ktm_2.mv('./uploads/' + ktm_2.name);
+                        proof_2.mv('./uploads/' + proof_2.name);
+                        photo_2.mv('./uploads/' + photo_2.name);
+                    }
+                    catch(e){
+
+                    }
+                    let ktm_3,photo_3,proof_3;
+                    try{
+                    ktm_3 = req.files.ktm_3;
+                    proof_3=req.files.proof_3;
+                    photo_3=req.files.photo_3;
                     ktm_3.mv('./uploads/' + ktm_3.name);
                     proof_3.mv('./uploads/' + proof_3.name);
                     photo_3.mv('./uploads/' + photo_3.name);
                     }
                     catch(e){
-                        file_3=true
+                        
                     }
                     
                     const path='./uploads/';
                     const upload_type=['KTM','PROOF','PHOTO']
 
                     try{
-                        drive_upload("KTM",req.body.name_1,ktm_1.name,path).then((response)=>{
-                            User.updateOne({email:user.email},{ktm_1:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
-                            fs.unlink(path+ktm_1.name,(err)=>{
-                                if(err){
-                                    res.status(500).send(err.message);
-                                }
+                        if(ktm_1){
+                            drive_upload("KTM",req.body.name_1,ktm_1.name,path).then((response)=>{
+                                User.updateOne({email:user.email},{ktm_1:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
+                                fs.unlink(path+ktm_1.name,(err)=>{
+                                    if(err){
+                                        res.status(500).send(err.message);
+                                    }
+                                    
+                                })    
                                 
-                            })    
-                            
+                                })
                             })
-                        })
-                        drive_upload("KTM",req.body.name_2,ktm_2.name,path).then((response)=>{
-                            User.updateOne({email:user.email},{ktm_2:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
-                            fs.unlink(path+ktm_2.name,(err)=>{
-                                if(err){
-                                    res.status(500).send(err.message);
-                                }
+                        }
+                        if(ktm_2){
+                            drive_upload("KTM",req.body.name_2,ktm_2.name,path).then((response)=>{
+                                User.updateOne({email:user.email},{ktm_2:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
+                                fs.unlink(path+ktm_2.name,(err)=>{
+                                    if(err){
+                                        res.status(500).send(err.message);
+                                    }
+                                    
+                                })    
                                 
-                            })    
-                            
+                                })
                             })
-                        })
-                        drive_upload("PROOF",req.body.name_1,proof_1.name,path).then((response)=>{
-                            User.updateOne({email:user.email},{proof_1:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
-                            fs.unlink(path+proof_1.name,(err)=>{
-                                if(err){
-                                    res.status(500).send(err.message);
-                                }
+                        }
+                        if(proof_1){
+                            drive_upload("PROOF",req.body.name_1,proof_1.name,path).then((response)=>{
+                                User.updateOne({email:user.email},{proof_1:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
+                                fs.unlink(path+proof_1.name,(err)=>{
+                                    if(err){
+                                        res.status(500).send(err.message);
+                                    }
+                                    
+                                })    
                                 
-                            })    
-                            
+                                })
                             })
-                        })
-                        drive_upload("PROOF",req.body.name_2,proof_2.name,path).then((response)=>{
-                            User.updateOne({email:user.email},{proof_2:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
-                            fs.unlink(path+proof_2.name,(err)=>{
-                                if(err){
-                                    res.status(500).send(err.message);
-                                }
+                        }
+
+                        if(proof_2){
+                            drive_upload("PROOF",req.body.name_2,proof_2.name,path).then((response)=>{
+                                User.updateOne({email:user.email},{proof_2:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
+                                fs.unlink(path+proof_2.name,(err)=>{
+                                    if(err){
+                                        res.status(500).send(err.message);
+                                    }
+                                    
+                                })    
                                 
-                            })    
-                            
+                                })
                             })
-                        
-                        drive_upload("PHOTO",req.body.name_1,photo_1.name,path).then((response)=>{
-                            User.updateOne({email:user.email},{photo_1:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
-                            fs.unlink(path+photo_1.name,(err)=>{
-                                if(err){
-                                    res.status(500).send(err.message);
-                                }
+                        }
+
+                        if(photo_1){
+                            drive_upload("PHOTO",req.body.name_1,photo_1.name,path).then((response)=>{
+                                User.updateOne({email:user.email},{photo_1:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
+                                fs.unlink(path+photo_1.name,(err)=>{
+                                    if(err){
+                                        res.status(500).send(err.message);
+                                    }
+                                    
+                                })    
                                 
-                            })    
-                            
+                                })
                             })
-                        })
-                        drive_upload("PHOTO",req.body.name_2,photo_2.name,path).then((response)=>{
-                            User.updateOne({email:user.email},{photo_2:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
-                            fs.unlink(path+photo_2.name,(err)=>{
-                                if(err){
-                                    res.status(500).send(err.message);
-                                }
+                        }
+
+                        if(photo_2){
+                            drive_upload("PHOTO",req.body.name_2,photo_2.name,path).then((response)=>{
+                                User.updateOne({email:user.email},{photo_2:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
+                                fs.unlink(path+photo_2.name,(err)=>{
+                                    if(err){
+                                        res.status(500).send(err.message);
+                                    }
+                                    
+                                })    
                                 
-                            })    
-                            
+                                })
                             })
-                        })
+                        }
+
+                        if(ktm_3){
+                            drive_upload("KTM",req.body.name_3,ktm_3.name,path).then((response)=>{
+                                User.updateOne({email:user.email},{ktm_3:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
+                                fs.unlink(path+ktm_3.name,(err)=>{
+                                    if(err){
+                                        res.status(500).send(err.message);
+                                    }
+                                    
+                                })    
+                                
+                                })
+                            })
+                        }
+                        if(proof_3){
+                            drive_upload("PROOF",req.body.name_2,proof_3.name,path).then((response)=>{
+                                User.updateOne({email:user.email},{proof_3:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
+                                fs.unlink(path+proof_3.name,(err)=>{
+                                    if(err){
+                                        res.status(500).send(err.message);
+                                    }
+                                    
+                                })    
+                                
+                                })
+                            })
+                        }
+                        if(photo_3){
+                            drive_upload("PHOTO",req.body.name_2,photo_3.name,path).then((response)=>{
+                                User.updateOne({email:user.email},{photo_3:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
+                                fs.unlink(path+photo_3.name,(err)=>{
+                                    if(err){
+                                        res.status(500).send(err.message);
+                                    }
+                                    
+                                })    
+                                
+                                })
+                            })
+                        }
                         
                     
                     
-                    })
+                   
                 }
                     catch (e){
                         res.status(500).send(e.message);
@@ -312,7 +379,10 @@ completeReg : async (req,res)=>{
                 catch(err){
                     res.status(500).send(err);
                 }
-                res.sendStatus(200)
+                finally{
+                    res.sendStatus(200)
+                }
+                
                 
                 
             }
