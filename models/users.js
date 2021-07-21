@@ -112,9 +112,22 @@ const userSchema = new Schema({
     },
     photo_3:{
         type: String
+    },
+    twibbon1:{
+        type: String
+    },
+    twibbon2:{
+        type: String
+    },
+    twibbon3:{
+        type: String
+    },
+    pop:{
+        type: String
+    },
+    status:{
+        type: String
     }
-    
-    
 },{timestamps:true});
 
 const User = mongoose.model('User',userSchema)

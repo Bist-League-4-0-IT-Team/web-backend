@@ -13,22 +13,22 @@ const path = require('path');
 const folderID = '17cfgNSm6_ogJShRxdkwRj41yoS4KiKFP';
 
 
-const CLIENT_ID ='711930695819-1si951n2lepqf916te2moj29pff4ful7.apps.googleusercontent.com';
-const CLIENT_SECRET ='3sRus-ASXXBkF-uKf6Yxslt4';
+const CLIENT_ID ='711930695819-519njs2qvp0l6iraanc89tt8ietorvl9.apps.googleusercontent.com';
+const CLIENT_SECRET ='CuBLjh6U6NW5aKEVxAJ-MAdg';
 const REDIRECT_URL= 'https://developers.google.com/oauthplayground';
-const REFRESH_TOKEN ='1//04UvSgW4s2MHeCgYIARAAGAQSNwF-L9IrWyrijqjhQAHbS8igBboaQLe3pXsXit-8BVdswUZQbVqcYR-He047mSRnuhWI3OqFCjM';
+const REFRESH_TOKEN ='1//040isARTu2CXtCgYIARAAGAQSNwF-L9IrVjDLLnhQgzy6Y1s2Ed-AhVH9ted087T8Mglr-wVEr-3hY2Vv04dAqiV3ShqpxkDA1Pc';
 
-const oauth2Client = new google.auth.OAuth2(
-    CLIENT_ID,
-    CLIENT_SECRET,
-    REDIRECT_URL
-)
+const Key_Path ="bist-league-test-1-b30d39fca9f4.json"
 
-oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN})
+const SCOPES =['https://www.googleapis.com/auth/drive'];
+const auth = new google.auth.GoogleAuth({
+    keyFile: Key_Path,
+    scopes: ['https://www.googleapis.com/auth/drive'],
+  });
 
 const drive = google.drive({
     version : 'v3',
-    auth : oauth2Client
+   auth
 })
 async function drive_upload(item,body_name,file_name,path){
     return (await drive.files.create({
@@ -45,7 +45,7 @@ async function drive_upload(item,body_name,file_name,path){
     }))
 }
 function generateAccessToken(email) {
-    return jwt.sign(email, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
+    return jwt.sign(email, process.env.TOKEN_SECRET, { expiresIn: '50000s' });
   }
   async function authenticateToken(req, res) {
     const authHeader = req.headers['authorization']
@@ -193,12 +193,17 @@ completeReg : async (req,res)=>{
                 email_3:req.body.email_3,
                 linkedin_3:req.body.linkedin_3,
                 id_line_3:req.body.id_line_3,
+                twibbon1:req.body.twibbon1,
+                twibbon2:req.body.twibbon2,
+                twibbon3:req.body.twibbon3,
+                pop:req.body.pop,
+                status:"Registered"
             
             },async (err,result)=>{
             if(err){
                 res.status(400).json({
                     status: "FAILED",
-                    message: "email is not registered"
+                    message: err
                 })
             }
             else{
@@ -371,6 +376,26 @@ completeReg : async (req,res)=>{
                             drive_upload("photo",req.body.name_3,photo_3.name,path).then((response)=>{
                                 User.updateOne({email:user.email},{photo_3:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
                                 fs.unlink(path+photo_3.name,(err)=>{
+                                    if(err){
+                                        res.status(500).send(err.message);
+                                    }
+                                    
+                                })    
+                                
+                                })
+                            })
+                        })
+                        
+                    }
+                    catch(e){
+                        
+                    }
+                    try{
+                        let pop=req.files.pop;
+                        await pop.mv('./uploads/' + pop.name).then((res,err)=>{
+                            drive_upload("PROOF",req.body.name_1,pop.name,path).then((response)=>{
+                                User.updateOne({email:user.email},{pop:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
+                                fs.unlink(path+pop.name,(err)=>{
                                     if(err){
                                         res.status(500).send(err.message);
                                     }
