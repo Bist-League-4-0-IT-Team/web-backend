@@ -157,6 +157,59 @@ module.exports ={
         })
 },
 
+submission1: async (req,res)=>{
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(',')[0]
+      
+    if (token == null) res.sendStatus(401)
+
+
+    jwt.verify(token, process.env.TOKEN_SECRET, async (err, user) => {
+
+    if (err) {res.sendStatus(403)}
+
+    else{
+        try{
+            const path="./uploads/"
+            let files= req.files.files
+            files.mv('./uploads/' + user.email +files.name).then((result,err)=>{
+                drive.files.create({
+                    requestBody:{
+                        name: user.email+'-'+files.name||"unknown",
+                        
+                        parents:[folderID]
+                    },
+                    media:{
+                        
+                        body: fs.createReadStream(path+user.email +files.name)
+                    }
+            
+                }).then((response)=>{
+                    User.updateOne({email:user.email},{submission_1:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
+                    fs.unlink('./uploads/' + user.email +files.name,(err)=>{
+                        if(err){
+                            res.status(500).send(err.message);
+                        }
+                        
+                        res.status(200).send({id_file:response.data.id})
+                        
+                    })
+                        
+                        
+                    
+                    })
+                })
+            })
+            }
+        catch (e){
+            res.status(500).send(e);
+            console.log(e)
+        }
+        
+    }
+})
+},
+
 completeReg : async (req,res)=>{
         
     const authHeader = req.headers['authorization']

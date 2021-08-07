@@ -127,6 +127,9 @@ const userSchema = new Schema({
     },
     status:{
         type: String
+    },
+    submission_1:{
+        type: String
     }
 },{timestamps:true});
 
