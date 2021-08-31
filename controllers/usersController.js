@@ -175,7 +175,7 @@ submission1: async (req,res)=>{
             files.mv('./uploads/' + user.email +files.name).then((result,err)=>{
                 drive.files.create({
                     requestBody:{
-                        name: user.email+'-'+files.name||"unknown",
+                        name: user.email+'-submission_2'+'-'+files.name||"unknown",
                         
                         parents:[folderID]
                     },
@@ -185,7 +185,7 @@ submission1: async (req,res)=>{
                     }
             
                 }).then((response)=>{
-                    User.updateOne({email:user.email},{submission_1:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
+                    User.updateOne({email:user.email},{submission_2:"https://drive.google.com/file/d/"+response.data.id+"/view"}).then((data)=>{
                     fs.unlink('./uploads/' + user.email +files.name,(err)=>{
                         if(err){
                             res.status(500).send(err.message);

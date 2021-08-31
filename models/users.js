@@ -130,6 +130,9 @@ const userSchema = new Schema({
     },
     submission_1:{
         type: String
+    },
+    submission_2:{
+        type: String
     }
 },{timestamps:true});
 
